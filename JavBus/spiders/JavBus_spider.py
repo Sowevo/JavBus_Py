@@ -10,6 +10,9 @@ class JavBusSpider(RedisSpider):
     base_url = 'https://www.javbus.com'
     name = 'JavBus'
     allowed_domains = ["www.javbus.com"]
+    start_urls = [
+        "https://www.javbus.com/"
+    ]
     redis_key = 'Javbus:start_urls'
 
     def parse(self, r):
