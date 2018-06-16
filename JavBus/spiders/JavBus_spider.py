@@ -1,15 +1,16 @@
 import scrapy
 import time
+
+from scrapy_redis.spiders import RedisSpider
+
 from JavBus.items import JavbusItem
 
 
-class JavBusSpider(scrapy.Spider):
+class JavBusSpider(RedisSpider):
     base_url = 'https://www.javbus.com'
     name = 'JavBus'
     allowed_domains = ["www.javbus.com"]
-    start_urls = [
-        "https://www.javbus.com/GNE-195"
-    ]
+    redis_key = 'Javbus:start_urls'
 
     def parse(self, r):
         if len(r.css('.bigImage img')) > 0:
