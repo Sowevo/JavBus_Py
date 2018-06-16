@@ -93,7 +93,7 @@ class JavBusSpider(RedisSpider):
                 magnet['is_HD'] = infos[1].xpath('string(.)').extract_first().strip()
                 magnet['magnet_size'] = infos[2].xpath('string(.)').extract_first().strip()
                 magnet['magnet_date'] = infos[3].xpath('string(.)').extract_first().strip()
-            else:
+            elif len(infos) == 3:
                 magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()
                 magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
                 magnet['is_HD'] = 'NO_HD'
