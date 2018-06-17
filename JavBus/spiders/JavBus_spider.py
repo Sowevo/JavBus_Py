@@ -1,21 +1,45 @@
 import scrapy
 import time
 
+from scrapy.spiders import Rule, CrawlSpider
 from scrapy_redis.spiders import RedisSpider
-
+from scrapy.linkextractors import LinkExtractor
 from JavBus.items import JavbusItem
 
 
-class JavBusSpider(RedisSpider):
-    base_url = 'https://www.javbus.com'
+class JavBusSpider(CrawlSpider):
     name = 'JavBus'
-    allowed_domains = ["www.javbus.com"]
+    allowed_domains = ['www.javbus12.pw']
     start_urls = [
-        "https://www.javbus.com/"
+        'https://www.javbus12.pw/actresses'
     ]
+    rules = (
+
+
+
+        # 演员详情页
+        Rule(LinkExtractor(allow=(r'https://www.javbus12.pw/(uncensored/)?star/\w+$'),deny=(r'/en/?|/ko/?|/ja/?|/uncensored|/genre|/actresses')),
+             callback="parse_star", follow=True),
+
+        # 电影详情页
+        Rule(LinkExtractor(allow=(r'https://www.javbus12.pw/[\w-]+$'),deny=(r'/en/?|/ko/?|/ja/?|/uncensored|/genre|/actresses')),
+             callback="parse_main", follow=True),
+
+        # 其他页面 r"https://www.javbus.com/actresses|https://www.javbus.com/uncensored/actresses"
+        Rule(LinkExtractor(allow=(r'^((?!/en/|/ko/|/ja/).)*$'))),
+    )
     redis_key = 'Javbus:start_urls'
 
-    def parse(self, r):
+    def parse_star(self, r):
+        print('演员详情页:'+r.url)
+        pass
+
+    def parse_main(self, r):
+        print('电影详情页:'+r.url)
+        pass
+
+
+    def parse_main_old(self, r):
         if len(r.css('.bigImage img')) > 0:
             title = cover = censored = censored = code = release_date = duration = director = maker =\
                 publisher = series = tags = stars = previews = gid = uc = None
