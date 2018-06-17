@@ -8,104 +8,152 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+#     中文的 https://www.jianshu.com/p/df9c0d1e9087
 
+# Scrapy项目的名字,这将用来构造默认 User-Agent,同时也用来log,
+# 当您使用 startproject 命令创建项目时其也被自动赋值。
 BOT_NAME = 'JavBus'
-
+# Scrapy搜索spider的模块列表 默认: [xxx.spiders]
 SPIDER_MODULES = ['JavBus.spiders']
+# 使用 genspider 命令创建新spider的模块。默认: 'xxx.spiders'
 NEWSPIDER_MODULE = 'JavBus.spiders'
 
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'JavBus (+http://www.yourdomain.com)'
+# 爬取的默认User-Agent，除非被覆盖
+#USER_AGENT = 'demo1 (+http://www.yourdomain.com)'
 
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
 
-# Configure maximum concurrent requests performed by Scrapy (default: 16)
+
+# Scrapy downloader 并发请求(concurrent requests)的最大值,默认: 16
 #CONCURRENT_REQUESTS = 32
 
-# Configure a delay for requests for the same website (default: 0)
-# See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
+# 为同一网站的请求配置延迟（默认值：0）
+# 下载器在下载同一个网站下一个页面前需要等待的时间,
+# 该选项可以用来限制爬取速度,减轻服务器压力。同时也支持小数:0.25 以秒为单位
+# See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 #DOWNLOAD_DELAY = 3
-# The download delay setting will honor only one of:
+
+
+# 下载延迟设置只有一个有效
+# 对单个网站进行并发请求的最大值。
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# 对单个IP进行并发请求的最大值。如果非0,则忽略 CONCURRENT_REQUESTS_PER_DOMAIN 设定,
+# 使用该设定。也就是说,并发限制将针对IP,而不是网站。该设定也影响 DOWNLOAD_DELAY:
+# 如果 CONCURRENT_REQUESTS_PER_IP 非0,下载延迟应用在IP而不是网站上。
 #CONCURRENT_REQUESTS_PER_IP = 16
 
-# Disable cookies (enabled by default)
+# 禁用Cookie（默认情况下启用）
 #COOKIES_ENABLED = False
 
-# Disable Telnet Console (enabled by default)
+# 禁用Telnet控制台（默认启用）
 #TELNETCONSOLE_ENABLED = False
 
-# Override the default request headers:
+# 覆盖默认请求标头：
 #DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
 #}
 
-# Enable or disable spider middlewares
-# See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+# 启用或禁用蜘蛛中间件
+# See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'JavBus.middlewares.JavbusSpiderMiddleware': 543,
+#    'demo1.middlewares.Demo1SpiderMiddleware': 543,
 #}
 
-# Enable or disable downloader middlewares
-# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'JavBus.middlewares.JavbusDownloaderMiddleware': 543,
-#}
 
-# Enable or disable extensions
-# See https://doc.scrapy.org/en/latest/topics/extensions.html
+# 启用或禁用扩展程序
+# See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-# Configure item pipelines
-# See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'JavBus.pipelines.JavbusPipeline': 300,
-#}
 
-# Enable and configure the AutoThrottle extension (disabled by default)
-# See https://doc.scrapy.org/en/latest/topics/autothrottle.html
+# 启用和配置AutoThrottle扩展（默认情况下禁用）
+# See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
-# The initial download delay
+
+# 初始下载延迟
 #AUTOTHROTTLE_START_DELAY = 5
-# The maximum download delay to be set in case of high latencies
+
+
+# 在高延迟的情况下设置的最大下载延迟
 #AUTOTHROTTLE_MAX_DELAY = 60
-# The average number of requests Scrapy should be sending in parallel to
-# each remote server
+
+
+# Scrapy请求的平均数量应该并行发送每个远程服务器
 #AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
-# Enable showing throttling stats for every response received:
+
+
+# 启用显示所收到的每个响应的调节统计信息：
 #AUTOTHROTTLE_DEBUG = False
 
-# Enable and configure HTTP caching (disabled by default)
-# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
+# 启用和配置HTTP缓存（默认情况下禁用）
+# See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
 #HTTPCACHE_ENABLED = True
 #HTTPCACHE_EXPIRATION_SECS = 0
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
-#H#TTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-MONGO_HOST = "10.0.0.224"    # 主机IP
-MONGO_PORT = 27017          # 端口号
-MONGO_DB = "JavBus"         # 库名
-MONGO_COLL = "info"         # collection名
+#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# ############基础设置############
+
+# 如果启用,Scrapy将会采用 robots.txt策略
+ROBOTSTXT_OBEY = False
+# 下载器中间件
+DOWNLOADER_MIDDLEWARES = {
+    # 'JavBus.middlewares.JavbusDownloaderMiddleware': 543,
+    # 调用的随机Agent中间件
+    'JavBus.middlewares.UserAgentmiddleware': 400
+}
+# 数据输出管道
+# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+    'JavBus.pipelines.JsonPipeline': 300
+    # 'JavBus.pipelines.MongoPipeline': 300
+}
+
+
+# ############日志设置############
+# 日志是否启动
+LOG_ENABLED = True
+# 用于记录的编码。
+LOG_ENCODING = 'utf-8'
+# 用于记录输出的文件名。如果None，将使用标准误差。
+LOG_FILE = None
+# 用于格式化日志消息的字符串。
+LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+# 用于格式化日期/时间的字符串
+LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
+# 记录的最低级别。可用级别为：CRITICAL，ERROR，WARNING，INFO，DEBUG。
+LOG_LEVEL = 'DEBUG'
+# 如果True，您的进程的所有标准输出（和错误）将被重定向到日志
+LOG_STDOUT = False
+# 如果True，日志将仅包含根路径。如果设置为，False 则它显示负责日志输出的组件
+LOG_SHORT_NAMES = False
+
+# ############数据导出设置############
+# 数据保存到MONGODB
+# 主机IP
+FEED_EXPORT_ENCODING = 'utf-8'
+MONGO_HOST = "10.0.0.224"
+# 端口号
+MONGO_PORT = 27017
+# 库名
+MONGO_DB = "JavBus"
+# collection名
+MONGO_COLL = "info"
 # MONGO_USER = "zhangsan"
 # MONGO_PSW = "123456"
 
-FEED_EXPORT_ENCODING = 'utf-8'
-ITEM_PIPELINES = {
-    # 'JavBus.pipelines.JsonPipeline': 300
-    'JavBus.pipelines.MongoPipeline': 300
-}
-# 不清除Redis队列、这样可以暂停/恢复 爬取
-SCHEDULER_PERSIST = True
-# 启用Redis调度存储请求队列
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-# 确保所有的爬虫通过Redis去重
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://10.0.0.224:6379'
-# REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
-# REDIS_PORT = 6379
+
+# ############ScrapyRedis设置############
+# # 不清除Redis队列、这样可以暂停/恢复 爬取
+# SCHEDULER_PERSIST = True
+# # 启用Redis调度存储请求队列
+# SCHEDU# LER = "scrapy_redis.scheduler.Scheduler"
+# # 确保所有的爬虫通过Redis去重
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+# REDIS_URL = 'redis://10.0.0.224:6379'
+# # REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
+# # REDIS_PORT = 6379
