@@ -8,7 +8,7 @@
 import scrapy
 
 
-class JavbusItem(scrapy.Item):
+class MainItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     # 编号
@@ -41,4 +41,3 @@ class JavbusItem(scrapy.Item):
     magnets = scrapy.Field()
     # 更新时间
     update_time = scrapy.Field()
-    pass

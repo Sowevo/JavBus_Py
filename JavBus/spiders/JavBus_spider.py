@@ -3,17 +3,17 @@ import time
 
 from scrapy_redis.spiders import RedisSpider
 
-from JavBus.items import JavbusItem
+from JavBus.items import MainItem
 
 
-class JavBusSpider(RedisSpider):
+class JavBusMainSpider(RedisSpider):
     base_url = 'https://www.javbus.com'
-    name = 'JavBus'
+    name = 'JavBusMain'
     allowed_domains = ["www.javbus.com"]
     start_urls = [
         "https://www.javbus.com/"
     ]
-    redis_key = 'Javbus:start_urls'
+    redis_key = 'JavBusMain:start_urls'
 
     def parse(self, r):
         if len(r.css('.bigImage img')) > 0:
@@ -57,7 +57,7 @@ class JavBusSpider(RedisSpider):
                     pass
                 else:
                     print("存在未知字段!!!"+header)
-            item = JavbusItem()
+            item = MainItem()
             item['code'] = code
             item['title'] = title
             item['censored'] = censored
