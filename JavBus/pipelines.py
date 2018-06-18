@@ -9,18 +9,26 @@ import json
 import pymongo
 from scrapy.conf import settings
 
+from JavBus.items import MainItem, StarItem
+
 
 class JsonPipeline(object):
     def __init__(self):
-        self.file = codecs.open('JavBus.json', 'w', encoding='utf-8')
+        self.main_file = codecs.open('JavBus.json', 'w', encoding='utf-8')
+        self.star_file = codecs.open('JavBus_Star.json', 'w', encoding='utf-8')
 
     def process_item(self, item, spider):
         line = json.dumps(dict(item), ensure_ascii=False) + "\n"
-        self.file.write(line)
+        # 根据Item的类型保存到不同的文件
+        if isinstance(item, MainItem):
+            self.main_file.write(line)
+        elif isinstance(item, StarItem):
+            self.star_file.write(line)
         return item
 
     def spider_closed(self, spider):
-        self.file.close()
+        self.main_file.close()
+        self.star_file.close()
 
 
 class MongoPipeline(object):

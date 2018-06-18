@@ -151,9 +151,9 @@ MONGO_COLL = "info"
 # # 不清除Redis队列、这样可以暂停/恢复 爬取
 # SCHEDULER_PERSIST = True
 # # 启用Redis调度存储请求队列
-# SCHEDU# LER = "scrapy_redis.scheduler.Scheduler"
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # # 确保所有的爬虫通过Redis去重
 # DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # REDIS_URL = 'redis://10.0.0.224:6379'
-# # REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
-# # REDIS_PORT = 6379
+# REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
+# REDIS_PORT = 6379

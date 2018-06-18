@@ -8,7 +8,7 @@
 import scrapy
 
 
-class JavbusItem(scrapy.Item):
+class MainItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     # 编号
@@ -41,4 +41,30 @@ class JavbusItem(scrapy.Item):
     magnets = scrapy.Field()
     # 更新时间
     update_time = scrapy.Field()
+    pass
+
+
+class StarItem(scrapy.Item):
+    # 名字
+    name = scrapy.Field()
+    # 编号
+    code = scrapy.Field()
+    # 生日
+    birthday = scrapy.Field()
+    # 身高
+    height = scrapy.Field()
+    # 罩杯
+    cup = scrapy.Field()
+    # 胸围
+    bust = scrapy.Field()
+    # 腰围
+    waist = scrapy.Field()
+    # 臀围
+    hips = scrapy.Field()
+    # 出生地
+    hometown = scrapy.Field()
+    # 爱好
+    hobby = scrapy.Field()
+    # 头像
+    avatar = scrapy.Field()
     pass
