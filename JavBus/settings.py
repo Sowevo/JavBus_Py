@@ -109,7 +109,9 @@ DOWNLOADER_MIDDLEWARES = {
 # 数据输出管道
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'JavBus.pipelines.JsonPipeline': 300
+    'JavBus.pipelines.JsonPipeline': 300,
+    # 将清除的项目在redis进行处理
+    'scrapy_redis.pipelines.RedisPipeline': 300
     # 'JavBus.pipelines.MongoPipeline': 300
 }
 
@@ -147,13 +149,13 @@ MONGO_COLL = "info"
 # MONGO_PSW = "123456"
 
 
-# ############ScrapyRedis设置############
-# # 不清除Redis队列、这样可以暂停/恢复 爬取
-# SCHEDULER_PERSIST = True
-# # 启用Redis调度存储请求队列
-# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-# # 确保所有的爬虫通过Redis去重
-# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-# REDIS_URL = 'redis://10.0.0.224:6379'
+############ScrapyRedis设置############
+# 不清除Redis队列、这样可以暂停/恢复 爬取
+SCHEDULER_PERSIST = False
+# 启用Redis调度存储请求队列
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# 确保所有的爬虫通过Redis去重
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+REDIS_URL = 'redis://10.0.0.224:6379'
 # REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
 # REDIS_PORT = 6379
