@@ -25,7 +25,7 @@ class JavBusSpider(RedisCrawlSpider):
         # 其他页面 r"https://www.javbus.com/actresses|https://www.javbus.com/uncensored/actresses"
         Rule(LinkExtractor(allow=(r'^((?!/en/|/ko/|/ja/).)*$'))),
     )
-    redis_key = 'Javbus:start_urls'
+    redis_key = 'JavBus:start_urls'
 
     def parse_star(self, r):
         # print('演员详情页' + r.url)
@@ -139,16 +139,27 @@ class JavBusSpider(RedisCrawlSpider):
         for line in r.css('tr'):
             magnet = {}
             infos = line.css('a')
-            if len(infos) == 4:
-                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()
+            if len(infos) == 5:
+                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[:60]
                 magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
-                magnet['is_HD'] = infos[1].xpath('string(.)').extract_first().strip()
+                magnet['HD'] = infos[1].xpath('string(.)').extract_first().strip() == 'HD'
+                magnet['SUB'] = infos[2].xpath('string(.)').extract_first().strip() == 'SUB'
+                magnet['magnet_size'] = infos[3].xpath('string(.)').extract_first().strip()
+                magnet['magnet_date'] = infos[4].xpath('string(.)').extract_first().strip()
+            elif len(infos) == 4:
+                # 过滤magnet_url多余的后缀
+                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[:60]
+                magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
+                magnet['HD'] = infos[1].xpath('string(.)').extract_first().strip() == 'HD'
+                magnet['SUB'] = infos[1].xpath('string(.)').extract_first().strip() == 'SUB'
                 magnet['magnet_size'] = infos[2].xpath('string(.)').extract_first().strip()
                 magnet['magnet_date'] = infos[3].xpath('string(.)').extract_first().strip()
             elif len(infos) == 3:
-                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()
+                # 过滤magnet_url多余的后缀
+                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[:60]
                 magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
-                magnet['is_HD'] = 'NO_HD'
+                magnet['HD'] = False
+                magnet['SUB'] = False
                 magnet['magnet_size'] = infos[1].xpath('string(.)').extract_first().strip()
                 magnet['magnet_date'] = infos[2].xpath('string(.)').extract_first().strip()
             magnets.append(magnet)
