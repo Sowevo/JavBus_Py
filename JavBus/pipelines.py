@@ -38,9 +38,12 @@ class MongoPipeline(object):
         # 数据库登录需要帐号密码的话
         # self.client.admin.authenticate(settings['MINGO_USER'], settings['MONGO_PSW'])
         self.db = self.client[settings['MONGO_DB']]  # 获得数据库的句柄
-        self.coll = self.db[settings['MONGO_COLL']]  # 获得collection的句柄
-
+        self.coll_main = self.db[settings['MONGO_COLL_MAIN']]   # 获得main_collection的句柄
+        self.coll_star = self.db[settings['MONGO_COLL_STAR']]   # 获得star_collection的句柄
     def process_item(self, item, spider):
         postItem = dict(item)  # 把item转化成字典形式
-        self.coll.insert(postItem)  # 向数据库插入一条记录
-        # return item  # 会在控制台输出原item数据，可以选择不写
+        if isinstance(item, MainItem):
+            self.coll_main.insert(postItem)  # 向数据库插入一条记录
+        elif isinstance(item, StarItem):
+            self.coll_star.insert(postItem)  # 向数据库插入一条记录
+        return item  # 会在控制台输出原item数据，可以选择不写

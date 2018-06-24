@@ -109,10 +109,10 @@ DOWNLOADER_MIDDLEWARES = {
 # 数据输出管道
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'JavBus.pipelines.JsonPipeline': 300,
+    # 'JavBus.pipelines.JsonPipeline': 300
     # 将清除的项目在redis进行处理
-    'scrapy_redis.pipelines.RedisPipeline': 300
-    # 'JavBus.pipelines.MongoPipeline': 300
+    # 'scrapy_redis.pipelines.RedisPipeline': 300
+    'JavBus.pipelines.MongoPipeline': 300
 }
 
 
@@ -144,14 +144,15 @@ MONGO_PORT = 27017
 # 库名
 MONGO_DB = "JavBus"
 # collection名
-MONGO_COLL = "info"
+MONGO_COLL_MAIN = "main"
+MONGO_COLL_STAR = "star"
 # MONGO_USER = "zhangsan"
 # MONGO_PSW = "123456"
 
 
 ############ScrapyRedis设置############
 # 不清除Redis队列、这样可以暂停/恢复 爬取
-SCHEDULER_PERSIST = False
+# SCHEDULER_PERSIST = False
 # 启用Redis调度存储请求队列
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # 确保所有的爬虫通过Redis去重
