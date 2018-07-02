@@ -142,7 +142,7 @@ MONGO_HOST = "10.0.0.224"
 # 端口号
 MONGO_PORT = 27017
 # 库名
-MONGO_DB = "JavBus"
+MONGO_DB = "JavBus-new"
 # collection名
 MONGO_COLL_MAIN = "main"
 MONGO_COLL_STAR = "star"

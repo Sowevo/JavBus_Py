@@ -79,7 +79,13 @@ class JavBusSpider(RedisCrawlSpider):
         cover = r.css('.col-md-9.screencap  img::attr(src)').extract_first()
         censored = r.css('li.active > a::text').extract_first()
         tags = r.css('.genre  a[href*="genre"]::text').extract()
-        stars = r.css('span[onmouseover] a::text').extract()
+        stars = []
+        # stars = r.css('span[onmouseover] a::text').extract()
+        for x in r.css('span[onmouseover] a'):
+            star = {}
+            star['name'] = x.xpath('string(.)').extract_first()
+            star['code'] = x.xpath('.//@href').extract_first().split('/')[-1]
+            stars.append(star)
         previews = r.css('a.sample-box::attr(href)').extract()
         script = r.xpath('//script')[8].extract()
         for line in script.split('\n'):
