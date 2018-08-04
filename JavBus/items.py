@@ -26,9 +26,9 @@ class MainItem(scrapy.Item):
     # 导演
     director = scrapy.Field()
     # 制作商
-    maker = scrapy.Field()
+    studio = scrapy.Field()
     # 发行商
-    publisher = scrapy.Field()
+    label = scrapy.Field()
     # 标签
     tags = scrapy.Field()
     # 封面

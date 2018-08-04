@@ -138,14 +138,27 @@ LOG_SHORT_NAMES = False
 # 数据保存到MONGODB
 # 主机IP
 FEED_EXPORT_ENCODING = 'utf-8'
-MONGO_HOST = "10.0.0.224"
+MONGO_HOST = "10.0.0.4"
 # 端口号
 MONGO_PORT = 27017
 # 库名
-MONGO_DB = "JavBus-new"
+MONGO_DB = "JavBus"
 # collection名
-MONGO_COLL_MAIN = "main"
+MONGO_COLL_MOVIE = "movie"
 MONGO_COLL_STAR = "star"
+MONGO_COLL_MAGNET = "magnet"
+MONGO_COLL_PREVIEW = "preview"
+MONGO_COLL_MOVIE_STAR = "movie_star"
+MONGO_COLL_STUDIO = "studio"
+MONGO_COLL_LABEL = "label"
+MONGO_COLL_DIRECTOR = "director"
+MONGO_COLL_SERIES = "series"
+MONGO_COLL_MOVIE_STUDIO = "movie_studio"
+MONGO_COLL_MOVIE_LABEL = "movie_label"
+MONGO_COLL_MOVIE_DIRECTOR = "movie_director"
+MONGO_COLL_MOVIE_SERIES = "movie_series"
+MONGO_COLL_TAG = "tag"
+MONGO_COLL_MOVIE_TAG = "movie_tag"
 # MONGO_USER = "zhangsan"
 # MONGO_PSW = "123456"
 
@@ -157,6 +170,6 @@ MONGO_COLL_STAR = "star"
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # 确保所有的爬虫通过Redis去重
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://10.0.0.224:6379'
+REDIS_URL = 'redis://10.0.0.4:6379'
 # REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
 # REDIS_PORT = 6379

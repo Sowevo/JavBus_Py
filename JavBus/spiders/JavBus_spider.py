@@ -73,18 +73,29 @@ class JavBusSpider(RedisCrawlSpider):
 
     def parse_main(self, r):
         # print('电影详情页' + r.url)
-        title = cover = censored = censored = code = release_date = duration = director = maker =\
-            publisher = series = tags = stars = previews = gid = uc = None
+        title = cover = censored = censored = code = release_date = duration = \
+        stars = previews = gid = uc = None
+        director = {}
+        studio = {}
+        label = {}
+        series = {}
         title = r.css('.col-md-9.screencap  img::attr(title)').extract_first()
         cover = r.css('.col-md-9.screencap  img::attr(src)').extract_first()
         censored = r.css('li.active > a::text').extract_first()
-        tags = r.css('.genre  a[href*="genre"]::text').extract()
+        tags = []
+        for t in r.css('.genre  a[href*="genre"]'):
+            tag = {
+                'name': t.xpath('string(.)').extract_first(),
+                'code': t.css('a::attr(href)').extract_first().split('/')[-1]
+            }
+            tags.append(tag)
         stars = []
         # stars = r.css('span[onmouseover] a::text').extract()
         for x in r.css('span[onmouseover] a'):
-            star = {}
-            star['name'] = x.xpath('string(.)').extract_first()
-            star['code'] = x.xpath('.//@href').extract_first().split('/')[-1]
+            star = {
+                'name': x.xpath('string(.)').extract_first(),
+                'code': x.xpath('.//@href').extract_first().split('/')[-1]
+            }
             stars.append(star)
         previews = r.css('a.sample-box::attr(href)').extract()
         script = r.xpath('//script')[8].extract()
@@ -96,8 +107,11 @@ class JavBusSpider(RedisCrawlSpider):
         magnets_url = 'https://'+self.domain+'/ajax/uncledatoolsbyajax.php?gid='+gid+'&uc='+uc+'&lang=en'
         for info in r.css('.info p'):
             header = info.css('.header::text').extract_first()
+            other_code = None
             if header:
                 data = info.xpath('string(.)').extract_first().replace(header, "").strip()
+                if header == '導演:' or header == '製作商:' or header == '發行商:' or header == '系列:':
+                    other_code = info.css('a::attr(href)').extract_first().split('/')[-1]
 
             if header == '識別碼:':
                 code = data
@@ -106,13 +120,17 @@ class JavBusSpider(RedisCrawlSpider):
             elif header == '長度:':
                 duration = data
             elif header == '導演:':
-                director = data
+                director['name'] = data
+                director['code'] = other_code
             elif header == '製作商:':
-                maker = data
+                studio['name'] = data
+                studio['code'] = other_code
             elif header == '發行商:':
-                publisher = data
+                label['name'] = data
+                label['code'] = other_code
             elif header == '系列:':
-                series = data
+                series['name'] = data
+                series['code'] = other_code
             elif header == '類別:' or header == '演員':
                 pass
             elif header is None:
@@ -127,15 +145,15 @@ class JavBusSpider(RedisCrawlSpider):
         item['release_date'] = release_date
         item['duration'] = duration
         item['director'] = director
-        item['maker'] = maker
-        item['publisher'] = publisher
+        item['studio'] = studio
+        item['label'] = label
         item['tags'] = tags
         item['cover'] = cover
         item['previews'] = previews
         item['series'] = series
         item['magnets'] = None
         item['release_date'] = release_date
-        item['update_time'] = time.time()
+        item['update_time'] = int(round(time.time() * 1000))
         # 将参数代入到第二个解析方法中
         yield scrapy.Request(magnets_url, meta={'item': item}, callback=self.parse_magnets)
 
