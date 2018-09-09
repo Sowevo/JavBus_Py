@@ -141,7 +141,7 @@ LOG_SHORT_NAMES = False
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # 确保所有的爬虫通过Redis去重
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://127.0.0.1:6379'
+REDIS_URL = 'redis://10.0.0.4:6379'
 # REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
 # REDIS_PORT = 6379
 
