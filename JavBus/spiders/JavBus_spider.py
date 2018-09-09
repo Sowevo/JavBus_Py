@@ -153,7 +153,6 @@ class JavBusSpider(RedisCrawlSpider):
         item['series'] = series
         item['magnets'] = None
         item['release_date'] = release_date
-        item['update_time'] = int(round(time.time() * 1000))
         # 将参数代入到第二个解析方法中
         yield scrapy.Request(magnets_url, meta={'item': item}, callback=self.parse_magnets)
 
@@ -164,29 +163,31 @@ class JavBusSpider(RedisCrawlSpider):
             magnet = {}
             infos = line.css('a')
             if len(infos) == 5:
-                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[:60]
+                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[20:60]
                 magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
                 magnet['HD'] = infos[1].xpath('string(.)').extract_first().strip() == 'HD'
                 magnet['SUB'] = infos[2].xpath('string(.)').extract_first().strip() == 'SUB'
                 magnet['magnet_size'] = infos[3].xpath('string(.)').extract_first().strip()
                 magnet['magnet_date'] = infos[4].xpath('string(.)').extract_first().strip()
+                magnets.append(magnet)
             elif len(infos) == 4:
                 # 过滤magnet_url多余的后缀
-                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[:60]
+                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[20:60]
                 magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
                 magnet['HD'] = infos[1].xpath('string(.)').extract_first().strip() == 'HD'
                 magnet['SUB'] = infos[1].xpath('string(.)').extract_first().strip() == 'SUB'
                 magnet['magnet_size'] = infos[2].xpath('string(.)').extract_first().strip()
                 magnet['magnet_date'] = infos[3].xpath('string(.)').extract_first().strip()
+                magnets.append(magnet)
             elif len(infos) == 3:
                 # 过滤magnet_url多余的后缀
-                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[:60]
+                magnet['magnet_url'] = infos[0].css('::attr(href)').extract_first().strip()[20:60]
                 magnet['magnet_name'] = infos[0].xpath('string(.)').extract_first().strip()
                 magnet['HD'] = False
                 magnet['SUB'] = False
                 magnet['magnet_size'] = infos[1].xpath('string(.)').extract_first().strip()
                 magnet['magnet_date'] = infos[2].xpath('string(.)').extract_first().strip()
-            magnets.append(magnet)
+                magnets.append(magnet)
         item['magnets'] = magnets
         yield item
 
