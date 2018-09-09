@@ -39,8 +39,6 @@ class MainItem(scrapy.Item):
     series = scrapy.Field()
     # 磁链
     magnets = scrapy.Field()
-    # 更新时间
-    update_time = scrapy.Field()
     pass
 
 
