@@ -20,81 +20,80 @@ NEWSPIDER_MODULE = 'JavBus.spiders'
 
 
 # 爬取的默认User-Agent，除非被覆盖
-#USER_AGENT = 'demo1 (+http://www.yourdomain.com)'
-
+# USER_AGENT = 'demo1 (+http://www.yourdomain.com)'
 
 
 # Scrapy downloader 并发请求(concurrent requests)的最大值,默认: 16
-#CONCURRENT_REQUESTS = 32
+# CONCURRENT_REQUESTS = 32
 
 # 为同一网站的请求配置延迟（默认值：0）
 # 下载器在下载同一个网站下一个页面前需要等待的时间,
 # 该选项可以用来限制爬取速度,减轻服务器压力。同时也支持小数:0.25 以秒为单位
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+# DOWNLOAD_DELAY = 3
 
 
 # 下载延迟设置只有一个有效
 # 对单个网站进行并发请求的最大值。
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # 对单个IP进行并发请求的最大值。如果非0,则忽略 CONCURRENT_REQUESTS_PER_DOMAIN 设定,
 # 使用该设定。也就是说,并发限制将针对IP,而不是网站。该设定也影响 DOWNLOAD_DELAY:
 # 如果 CONCURRENT_REQUESTS_PER_IP 非0,下载延迟应用在IP而不是网站上。
-#CONCURRENT_REQUESTS_PER_IP = 16
+# CONCURRENT_REQUESTS_PER_IP = 16
 
 # 禁用Cookie（默认情况下启用）
-#COOKIES_ENABLED = False
+# COOKIES_ENABLED = False
 
 # 禁用Telnet控制台（默认启用）
-#TELNETCONSOLE_ENABLED = False
+# TELNETCONSOLE_ENABLED = False
 
 # 覆盖默认请求标头：
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
-#}
+# }
 
 # 启用或禁用蜘蛛中间件
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'demo1.middlewares.Demo1SpiderMiddleware': 543,
-#}
+# }
 
 
 # 启用或禁用扩展程序
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
+# EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
+# }
 
 
 # 启用和配置AutoThrottle扩展（默认情况下禁用）
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+# AUTOTHROTTLE_ENABLED = True
 
 # 初始下载延迟
-#AUTOTHROTTLE_START_DELAY = 5
+# AUTOTHROTTLE_START_DELAY = 5
 
 
 # 在高延迟的情况下设置的最大下载延迟
-#AUTOTHROTTLE_MAX_DELAY = 60
+# AUTOTHROTTLE_MAX_DELAY = 60
 
 
 # Scrapy请求的平均数量应该并行发送每个远程服务器
-#AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+# AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 
 
 # 启用显示所收到的每个响应的调节统计信息：
-#AUTOTHROTTLE_DEBUG = False
+# AUTOTHROTTLE_DEBUG = False
 
 # 启用和配置HTTP缓存（默认情况下禁用）
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-#HTTPCACHE_ENABLED = True
-#HTTPCACHE_EXPIRATION_SECS = 0
-#HTTPCACHE_DIR = 'httpcache'
-#HTTPCACHE_IGNORE_HTTP_CODES = []
-#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# HTTPCACHE_ENABLED = True
+# HTTPCACHE_EXPIRATION_SECS = 0
+# HTTPCACHE_DIR = 'httpcache'
+# HTTPCACHE_IGNORE_HTTP_CODES = []
+# HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # ############基础设置############
 
@@ -111,8 +110,8 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     # 'JavBus.pipelines.JsonPipeline': 300
     # 将清除的项目在redis进行处理
-    # 'scrapy_redis.pipelines.RedisPipeline': 300
-    'JavBus.pipelines.MongoPipeline': 300
+    'JavBus.pipelines.MysqlPipeline': 300
+    # 'JavBus.pipelines.MongoPipeline': 300
 }
 
 
@@ -133,6 +132,19 @@ LOG_LEVEL = 'DEBUG'
 LOG_STDOUT = False
 # 如果True，日志将仅包含根路径。如果设置为，False 则它显示负责日志输出的组件
 LOG_SHORT_NAMES = False
+
+
+# ###########ScrapyRedis设置############
+# 不清除Redis队列、这样可以暂停/恢复 爬取
+# SCHEDULER_PERSIST = False
+# 启用Redis调度存储请求队列
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# 确保所有的爬虫通过Redis去重
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+REDIS_URL = 'redis://127.0.0.1:6379'
+# REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
+# REDIS_PORT = 6379
+
 
 # ############数据导出设置############
 # 数据保存到MONGODB
@@ -163,13 +175,11 @@ MONGO_COLL_MOVIE_TAG = "movie_tag"
 # MONGO_PSW = "123456"
 
 
-############ScrapyRedis设置############
-# 不清除Redis队列、这样可以暂停/恢复 爬取
-# SCHEDULER_PERSIST = False
-# 启用Redis调度存储请求队列
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-# 确保所有的爬虫通过Redis去重
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-REDIS_URL = 'redis://10.0.0.4:6379'
-# REDIS_HOST = '127.0.0.1'  # 也可以根据情况改成 localhost
-# REDIS_PORT = 6379
+# MYSQL 配置
+MYSQL_HOST = "10.0.0.4"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "root"
+MYSQL_PORT = 3306
+MYSQL_DB = "javbus"
+
+# ############数据导出设置############
