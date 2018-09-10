@@ -110,7 +110,7 @@ class MysqlPipeline(object):
                 post_item.pop('stars')
                 self.insert_data('movie', post_item)
             elif isinstance(item, StarItem):
-                self.insert_data('movie', post_item)
+                self.insert_data('star', post_item)
             self.conn.commit()
         except:
             self.conn.rollback()
